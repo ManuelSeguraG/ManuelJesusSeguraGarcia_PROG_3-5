@@ -29,14 +29,15 @@ class coche(
         }
     }
 
-//    fun apagarCoche(): String {
-//        return if (cocheEncendido.equals(true) && velocidadMarcha < 0 && velocidadMarcha == 0) {
-//            cocheEncendido = true
-//            "Coche apagado"
-//        } else {
-//            "Algo fallo, no se ha apagado el coche"
-//        }
-//    }
+    fun apagarCoche(): String {
+        return if (cocheEncendido.equals(true)  && velocidadActual == 0) {
+            velocidadMarcha = 0
+            cocheEncendido = false
+            "Coche apagado"
+        } else {
+            "Algo fallo, no se ha apagado el coche"
+        }
+    }
 
     fun iniciarCoche(): String {
         return if (cocheEncendido.equals(true)) {
@@ -49,7 +50,6 @@ class coche(
 
     fun acelerarCoche(): String {
         return if (velocidadActual == velocidadMaxima) {
-            gasolinaCoche -= 6 - velocidadMarcha
             "Velocidad maxima de $velocidadMaxima (marcha $velocidadMarcha y $gasolinaCoche l. de gasolina restantes)"
         } else return if ((gasolinaCoche - (6 - velocidadMarcha)) > 0 && velocidadMarcha > 0) {
             gasolinaCoche -= 6 - velocidadMarcha
@@ -57,6 +57,37 @@ class coche(
             "Velocidad actual $velocidadActual (marcha $velocidadMarcha y $gasolinaCoche l. de gasolina restantes)"
         } else {
             "No se ha podido acelerar"
+        }
+    }
+
+    fun cambiarMarcha(marcha: Int): String {
+        return if (marcha in 1..5) {
+            velocidadMarcha = marcha
+            "Marcha actual: $velocidadMarcha"
+        } else {
+            "No se ha podido cambiar la marcha (rango entre 1 y 5)"
+        }
+
+    }
+
+    fun frenarCoche(): String {
+        return if (velocidadActual == 0) {
+            "No se puede frenar, ya estamos quietos"
+        } else {
+            velocidadActual -= 5
+            "Velocidad actual $velocidadActual (marcha $velocidadMarcha y $gasolinaCoche l. de gasolina restantes)\""
+        }
+    }
+
+    fun rellenarTanqueCoche(cantidad: Int): String {
+        return if (cantidad > tanqueCoche) {
+            gasolinaCoche = tanqueCoche
+            "Tanque rellenado al maximo"
+        } else return if (cantidad == 0) {
+            "No se puede rellenar el tanque solo con aire"
+        } else {
+            gasolinaCoche = cantidad
+            "Tanque rellenado con $cantidad litros de gasolina"
         }
     }
 }
@@ -75,12 +106,20 @@ fun main(args: Array<String>) {
     println("")
     println(cocheTest.encenderCoche())
     cocheTest.velocidadMarcha = 1
-    cocheTest.gasolinaCoche = cocheTest.tanqueCoche
+    println(cocheTest.rellenarTanqueCoche(60))
     println(cocheTest.encenderCoche())
     println("")
     println(cocheTest.iniciarCoche())
-    repeat(50) {
+    repeat(10) {
         println(cocheTest.acelerarCoche())
     }
+    cocheTest.cambiarMarcha(5)
+    repeat(10) {
+        println(cocheTest.acelerarCoche())
+    }
+    repeat(20) {
+        println(cocheTest.frenarCoche())
+    }
+    println(cocheTest.apagarCoche())
 
 }
