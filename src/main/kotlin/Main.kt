@@ -6,11 +6,34 @@ class coche(
 ) {
     var gasolinaCoche: Int = 0
     var colorCoche: String = "Blanco"
+    var descripcionCoche: String = ""
+    var estadoCoche: String = ""
     var velocidadIncremento: Int = 5
     var velocidadDecremento: Int = 5
     var velocidadMarcha: Int = 0
     var velocidadActual: Int = 0
     var cocheEncendido: Boolean = false
+
+
+    constructor(
+    marcaCoche: String,
+    modeloCoche: String,
+    tanqueCoche: Int,
+    velocidadMaxima: Int,
+    descripcionCoche: String,
+    estadoCoche: String,
+    velocidadMarcha: Int,
+    velocidadActual: Int
+    ): this(marcaCoche, modeloCoche, tanqueCoche, velocidadMaxima){
+        this.marcaCoche = marcaCoche
+        this.modeloCoche = modeloCoche
+        this.tanqueCoche = tanqueCoche
+        this.velocidadMaxima = velocidadMaxima
+        this.descripcionCoche = descripcionCoche
+        this.estadoCoche = estadoCoche
+        this.velocidadMarcha = velocidadMarcha
+        this.velocidadActual = velocidadActual
+    }
 
     init {
         require(marcaCoche.trim().length > 0) { "Especifique una marca." }
@@ -53,7 +76,7 @@ class coche(
             "Velocidad maxima de $velocidadMaxima (marcha $velocidadMarcha y $gasolinaCoche l. de gasolina restantes)"
         } else return if ((gasolinaCoche - (6 - velocidadMarcha)) > 0 && velocidadMarcha > 0) {
             gasolinaCoche -= 6 - velocidadMarcha
-            velocidadActual += 5
+            velocidadActual += velocidadIncremento
             "Velocidad actual $velocidadActual (marcha $velocidadMarcha y $gasolinaCoche l. de gasolina restantes)"
         } else {
             "No se ha podido acelerar"
@@ -74,7 +97,7 @@ class coche(
         return if (velocidadActual == 0) {
             "No se puede frenar, ya estamos quietos"
         } else {
-            velocidadActual -= 5
+            velocidadActual -= velocidadDecremento
             "Velocidad actual $velocidadActual (marcha $velocidadMarcha y $gasolinaCoche l. de gasolina restantes)\""
         }
     }
@@ -92,8 +115,8 @@ class coche(
     }
 }
 
-fun main(args: Array<String>) {
-    var cocheTest: coche = coche(
+fun main() {
+    var cocheTest = coche(
         "Automanu",
         "Custom",
         65,
